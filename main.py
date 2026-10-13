@@ -15,10 +15,12 @@ class Stock:
         print(f"{self.ticker}\n現在値:{self.price}\n52週高値{self.high_52w}\n52週低値{self.low_52w}")
 
 def main():
-    ticker=input("ティッカーを入力してください:")
-    stock=Stock(ticker)
-    stock.fetch()
-    stock.print_info()
+    with open("tickers.txt",encoding="UTF-8") as f:
+        for line in f:
+            ticker=line.strip()
+            stock=Stock(ticker)
+            stock.fetch()
+            stock.print_info()
 
 if __name__=="__main__":
     main()
