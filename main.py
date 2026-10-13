@@ -17,7 +17,10 @@ class Stock:
 def main():
     with open("tickers.txt",encoding="UTF-8") as f:
         for line in f:
-            ticker=line.strip()
+            if line=="\n":
+                continue
+            
+            ticker=line.strip().upper()
             stock=Stock(ticker)
             stock.fetch()
             stock.print_info()

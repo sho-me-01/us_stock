@@ -1,3 +1,6 @@
 NVDA
 AAPL
+
 MSFT
+
+amd
