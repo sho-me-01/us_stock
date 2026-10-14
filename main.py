@@ -1,5 +1,7 @@
 from datetime import datetime
 import yfinance as yf
+import logging
+logging.getLogger("yfinance").setLevel(logging.CRITICAL)
 class Stock:
     def __init__(self,ticker):
         self.ticker=ticker
@@ -8,6 +10,9 @@ class Stock:
         self.high_52w=None
     def fetch(self):
         t=yf.Ticker(self.ticker).info
+        if None in t.values() :
+            raise IndentationError(f"{self.ticker}は存在しないティッカーです")
+        
         self.price=t.get("currentPrice")
         self.low_52w=t.get("fiftyTwoWeekLow")
         self.high_52w=t.get("fiftyTwoWeekHigh")
@@ -19,12 +24,13 @@ def main():
         for line in f:
             if line=="\n":
                 continue
-            
-            ticker=line.strip().upper()
-            stock=Stock(ticker)
-            stock.fetch()
-            stock.print_info()
-
+            try:
+                ticker=line.strip().upper()
+                stock=Stock(ticker)
+                stock.fetch()
+                stock.print_info()
+            except IndentationError as e:
+                print(e)
 if __name__=="__main__":
     main()
 
