@@ -10,7 +10,7 @@ class Stock:
         self.high_52w=None
     def fetch(self):
         t=yf.Ticker(self.ticker).info
-        if None in t.values() :
+        if None is t.get("currentPrice"):
             raise IndentationError(f"{self.ticker}は存在しないティッカーです")
         
         self.price=t.get("currentPrice")
