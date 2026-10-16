@@ -1,3 +1,4 @@
 .vanv
 __pycache__/
 .env
+stock.csv
