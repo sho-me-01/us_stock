@@ -72,26 +72,24 @@ class Stock:
         
     def print_info(self):
         print(f"{(self.ticker)}\n現在値:{(self.price)}\n前日比{change_none(self.regularMarketChangePercent)}\nプレマーケット値{change_none(self.preMarketChangePercent)}\n時価総額{change_none(self.marketCap)}\n実績PER{change_none(self.trailingPE)}\n売上成長率{change_none(self.revenueGrowth)}\n営業利益率{change_none(self.operatingMargins)}\n決算日{change_none(self.date)}")
-def read_csv():
-    with open("stock.csv",encoding="utf-8") as f:
-        reader=csv.DictReader(f)
-        for line in reader:
-            date=datetime.strptime(line["記録日"],"%Y-%m-%d %H:%M:%S.%f").date()
-            today_date=datetime.today().date()
-            if date==today_date:
-                print("記録済み")
-                return False
             
 def write_csv(rows):
-    if read_csv()==False:
-        return
     csv_file_path=r"C:\Users\shota\dev\us_stock\stock.csv"
     file_exists=os.path.exists(csv_file_path)
     with open(csv_file_path,"a",encoding="UTF-8",newline="") as f:
         fieldnames = list(rows[0].keys())
         writer=csv.DictWriter(f,fieldnames=fieldnames)
-        if not file_exists:
-            writer.writeheader
+        if file_exists:
+            with open("stock.csv",encoding="utf-8") as f_r:
+                reader=csv.DictReader(f_r)
+                for line in reader:
+                    date=datetime.strptime(line["記録日"],"%Y-%m-%d %H:%M:%S.%f").date()
+                    today_date=datetime.today().date()
+                    if date==today_date:
+                        print("記録済み")
+                        return False
+        else:
+            writer.writeheader()
         for line in rows:
             writer.writerow(line)
 
