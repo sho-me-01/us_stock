@@ -72,8 +72,20 @@ class Stock:
         
     def print_info(self):
         print(f"{(self.ticker)}\n現在値:{(self.price)}\n前日比{change_none(self.regularMarketChangePercent)}\nプレマーケット値{change_none(self.preMarketChangePercent)}\n時価総額{change_none(self.marketCap)}\n実績PER{change_none(self.trailingPE)}\n売上成長率{change_none(self.revenueGrowth)}\n営業利益率{change_none(self.operatingMargins)}\n決算日{change_none(self.date)}")
+def read_csv():
+    with open("stock.csv",encoding="utf-8") as f:
+        reader=csv.DictReader(f)
+        for line in reader:
+            date=datetime.strptime(line["記録日"],"%Y-%m-%d %H:%M:%S.%f").date()
+            today_date=datetime.today().date()
+            if date==today_date:
+                print("記録済み")
+                return False
+            
 def write_csv(rows):
-    csv_file_path=r"C:\Users\shota\us_stock\stock.csv"
+    if read_csv()==False:
+        return
+    csv_file_path=r"C:\Users\shota\dev\us_stock\stock.csv"
     file_exists=os.path.exists(csv_file_path)
     with open(csv_file_path,"a",encoding="UTF-8",newline="") as f:
         fieldnames = list(rows[0].keys())
@@ -82,6 +94,7 @@ def write_csv(rows):
             writer.writeheader
         for line in rows:
             writer.writerow(line)
+
 
 def main():
     with open("tickers.txt",encoding="UTF-8") as f:
